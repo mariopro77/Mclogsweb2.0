@@ -1,0 +1,46 @@
+
+const proyectosdatos = [
+    {
+        id: 1,
+        title: "proyectos.card1.title",
+        img1: "/Images/Proyectos/Energia2.jpg",
+        subtitle1: "proyectos.card1.subtitle1",
+        paragraph1: "proyectos.card1.paragraph1",
+        img2: "/Images/Proyectos/Energia1.jpg",
+        subtitle2: "proyectos.card1.subtitle2",
+        paragraph2: "proyectos.card1.paragraph2",
+        subtitle3: "proyectos.card1.subtitle3",
+        paragraph3: "proyectos.card1.paragraph3",
+        img4: "/Images/Proyectos/Parquesoco.jpg",
+        subtitle4: "proyectos.card1.subtitle4",
+        paragraph4: "proyectos.card1.paragraph4",
+        subtitle5: "proyectos.card1.subtitle5",
+        paragraph5: "proyectos.card1.paragraph5",
+    },
+    {
+        id: 2,
+        title: "proyectos.card2.title",
+        img1:  "/Images/Proyectos/CONFOTUR.jpg",
+        subtitle1: "proyectos.card2.subtitle1",
+        paragraph1: "proyectos.card2.paragraph1",
+        img2: "/Images/Proyectos/Confotur.png",
+        subtitle2: "proyectos.card2.subtitle2",
+        paragraph2: "proyectos.card2.paragraph2",
+        subtitle3: "proyectos.card2.subtitle3",
+        paragraph3: "proyectos.card2.paragraph3",
+    },
+    {
+        id: 3,
+        title: "proyectos.card3.title",
+        img1: "/Images/Proyectos/tratado.png",
+        subtitle1: "proyectos.card3.subtitle1",
+        paragraph1: "proyectos.card3.paragraph1",
+        img2: "/Images/Proyectos/Epa.png",
+        subtitle2: "proyectos.card3.subtitle2",
+        paragraph2: "proyectos.card3.paragraph2",
+        subtitle3: "proyectos.card3.subtitle3",
+        paragraph3: "proyectos.card3.paragraph3",
+    },
+];
+
+export default proyectosdatos;

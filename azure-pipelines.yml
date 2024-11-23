@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool: 'mymachine' # Ensure this VM image is available and has necessary tools
+
+variables:
+  buildConfiguration: 'Release'
+  firebaseServiceAccount: 'firebase-adminsdk.json' # Name of the uploaded secure file
+  SONARCLOUD_ORGANIZATION: 'demo-scrum'
+  SONARCLOUD_PROJECT_KEY: 'DemoScrum0077_Demo-Scrum'
+  SONARCLOUD_SERVICE_CONNECTION: 'SonarCloudServiceConnection' # Ensure this matches your service connection name
+
+steps:
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y git-lfs openjdk-11-jdk
+    git lfs install
+    git lfs pull
+    sudo chown -R $(whoami) /Users/admin/Library/Caches/node-gyp
+    sudo chown -R $(whoami) ~/.npm
+    npm install
+    npm run build
+  displayName: 'Install and Build with Git LFS'
+
+- script: |
+    echo "JAVA_HOME set to /usr/lib/jvm/java-11-openjdk-amd64"
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+    java -version
+  displayName: 'Set JAVA_HOME and Verify Java Version'
+
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: $(firebaseServiceAccount)
+  displayName: 'Download Firebase Service Account'
+
+- script: |
+    echo $(Build.SourceDirectory)
+    echo $(Build.ArtifactStagingDirectory)
+    mv $(Agent.TempDirectory)/$(firebaseServiceAccount) $(Build.ArtifactStagingDirectory)/firebase-adminsdk.json
+    export GOOGLE_APPLICATION_CREDENTIALS=$(Build.ArtifactStagingDirectory)/firebase-adminsdk.json
+  displayName: 'Move Service Account and Set Env Variable'
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: '$(SONARCLOUD_SERVICE_CONNECTION)'
+    organization: '$(SONARCLOUD_ORGANIZATION)'
+    projectKey: '$(SONARCLOUD_PROJECT_KEY)'
+    scannerMode: 'CLI'
+  displayName: 'Prepare SonarCloud Analysis'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Execute SonarCloud Analysis'

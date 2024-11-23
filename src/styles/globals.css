@@ -1,0 +1,143 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&display=swap');
+
+
+@import 'leaflet/dist/leaflet.css';
+
+
+@keyframes circleIn {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+
+@keyframes circleOut {
+  0% {
+    clip-path: circle(75% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(0% at 50% 50%);
+  }
+}
+
+.animate-circleIn {
+  animation: circleIn 0.5s ease-in-out forwards;
+}
+
+.animate-circleOut {
+  animation: circleOut 0.5s ease-in-out forwards;
+}
+
+body {
+  font-family: 'Baloo Bhaijaan 2', sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* styles.css */
+.infowin-panel {
+  font-size: 12px !important; /* Adjust font size as needed */
+}
+
+
+.mySwiper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.swiper-slide {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+
+  .fade-out {
+    animation: fadeOut 1s forwards;
+  }
+  
+  .fade-in {
+    animation: fadeIn 1s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+ 
+  
+  @keyframes marquee {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+  }
+  
+  .animate-marquee {
+    display: flex;
+    animation: marquee 250s linear infinite;
+  }
+
+  
+ 
