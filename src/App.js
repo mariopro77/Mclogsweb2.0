@@ -10,6 +10,7 @@ import "../i18n";
 function MyApp({ Component, pageProps }) {
   const [activeLink, setActiveLink] = useState("");
   const [trackSearch, setTrackSearch] = useState('');
+  const [shipName, setShipName] = useState('');
 
   useEffect(() => {
     if (typeof window !== "undefined") {

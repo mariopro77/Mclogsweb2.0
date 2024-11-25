@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST='{"app/Nosotros/page.jsx -> ../../Components/Linea de tiempo":{"id":103,"files":["static/chunks/103.079b5354ceb847ba.js"]}}';
