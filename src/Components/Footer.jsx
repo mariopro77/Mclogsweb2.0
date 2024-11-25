@@ -11,19 +11,19 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const Acceso_rapido = [
-    { name: t("us"), link: "/nosotros" },
-    { name: t("services"), link: "/servicios" },
-    { name: t("agents"), link: "/agentes" },
-    { name: t("news"), link: "/noticias" },
-    { name: t("tracking"), link: "/rastreo" },
-    { name: t("contacts"), link: "/contacto" },
+    { name: t("us"), link: "/Nosotros" },
+    { name: t("services"), link: "/Servicios" },
+    { name: t("agents"), link: "/Agentes" },
+    { name: t("news"), link: "/Noticias" },
+    { name: t("tracking"), link: "/Rastreo" },
+    { name: t("contacts"), link: "/Contacto" },
     { name: t("myaccount"), link: "https://my.mclogs.com/auth/login" },
   ];
 
   const Enlaces = [
-    { name: t("security_policy"), link: "/seguridadyprivacidad" },
-    { name: t("terminos_de_uso"), link: "/terminos" },
-    { name: t("centro_de_ayuda"), link: "/centrodeayuda" },
+    { name: t("security_policy"), link: "/PrivacidadySeguridad" },
+    { name: t("terminos_de_uso"), link: "/Terminos" },
+    { name: t("centro_de_ayuda"), link: "/Centrodeayuda" },
   ];
 
  

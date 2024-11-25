@@ -350,7 +350,7 @@ export default function Homepage() {
                                 imgSrc="/Images/Logos/high-performace.png"
                                 title="HIGH PERFORMANCE CL"
                                 description={t("highperformance_description")}
-                                link="#/highperformance"
+                                link="/HighPerformance"
                                 target=""
                             />
                         </div>
