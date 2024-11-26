@@ -1,14 +1,13 @@
 'use client'
 
-import React, { useState, useEffect, useRef,  useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useTranslation } from "react-i18next";
-import {motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { TrackingContext } from '../../../context/TrackingContext'; 
 
 export default function Tracking() { 
 
-  const { trackSearch, setTrackSearch , shipName , setShipName} = useContext(TrackingContext);
-
+  const { trackSearch, setTrackSearch, shipName, setShipName } = useContext(TrackingContext);
 
   const { t } = useTranslation("common");
   const [iframeSrc, setIframeSrc] = useState("");
@@ -23,7 +22,13 @@ export default function Tracking() {
   const [shipFetchError, setShipFetchError] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
+  // Estado local para la entrada del usuario
+  const [inputValue, setInputValue] = useState('');
 
+  // Inicializar inputValue con trackSearch al montar el componente
+  useEffect(() => {
+    setInputValue(trackSearch);
+  }, [trackSearch]); // Asegura que si trackSearch cambia inicialmente, inputValue también lo haga
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,7 +42,7 @@ export default function Tracking() {
     if (trackSearch === '') {
       setTrackResult(null);
       setError(null);
-      setShipFetchError(false); // Reset error state when search is cleared
+      setShipFetchError(false); // Resetear estado de error cuando se limpia la búsqueda
     }
   }, [trackSearch]);
 
@@ -60,7 +65,7 @@ export default function Tracking() {
 
       setShipName(foundShipName);
     }
-  }, [trackResult , setShipName]);
+  }, [trackResult, setShipName]);
 
   useEffect(() => {
     if (shipName && shipName.length > 0) {
@@ -95,24 +100,22 @@ export default function Tracking() {
     }
   }, [trackResult, valid]);
 
-  // Automatically search when the component mounts
-  useEffect(() => {
-    if (trackSearch) {
-      handleButtonClick();
-    }
-  }, [trackSearch]); // Run when the component mounts and initialTrackSearch changes
+  // Función separada para realizar el fetch
+  const performFetch = async (searchTerm) => {
+    setShipFetchError(false); // Resetear estado de error
+    setIsVisible(true); // Resetear visibilidad
+    setShipName(''); // Resetear nombre del barco
 
-  const handleButtonClick = async () => {
-    setShipFetchError(false); // Reset error state when a new search is initiated
-    setIsVisible(true); // Reset visibility
-    setShipName(''); // Reset ship name for new search
     try {
-      const response = await fetch(`https://api.mclogs.com/odata/public/GetOrderByText(Value='${trackSearch}')?$select=Oid,State,ETD,ETA,TelexRelease,TransportMode,MovementType,Freights,Summary&$expand=Freights,Summary`);
+      const response = await fetch(`https://api.mclogs.com/odata/public/GetOrderByText(Value='${searchTerm}')?$select=Oid,State,ETD,ETA,TelexRelease,TransportMode,MovementType,Freights,Summary&$expand=Freights,Summary`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
 
       setTrackResult(data);
       setMovementType(data.MovementType);
-      setIsContainer(/^([A-Z]{3})([UJZ])([0-9]{6})([0-9])$/.test(trackSearch));
+      setIsContainer(/^([A-Z]{3})([UJZ])([0-9]{6})([0-9])$/.test(searchTerm));
 
       if (data.Summary && isContainer && (data.MovementType === 'Consolidation' || data.MovementType === 'LCL/LCL')) {
         data.Summary = data.Summary.filter(x => !['EnCoordinacion', 'En Coordinación', 'En Transito', 'EnTransito'].includes(x.Status));
@@ -120,9 +123,21 @@ export default function Tracking() {
 
       setError(null);
     } catch (error) {
+      console.error('Error fetching data:', error);
       setError('No se encontraron resultados');
       setTrackResult(null);
     }
+  };
+
+  useEffect(() => {
+    if (trackSearch) {
+      performFetch(trackSearch);
+    }
+  }, [trackSearch]);
+
+  const handleButtonClick = () => {
+    // Solo actualizar trackSearch cuando el usuario realiza una búsqueda explícita
+    setTrackSearch(inputValue);
   };
 
   const handleViewShipLocation = async (trackResult) => {
@@ -157,6 +172,7 @@ export default function Tracking() {
           }
         }
       } catch (error) {
+        console.error('Error fetching ship location:', error);
         setFetchSuccessful(false);
         const summary = trackResult.Summary;
         if (summary.length > 0 && summary[summary.length - 1].MMSI) {
@@ -170,21 +186,22 @@ export default function Tracking() {
   };
 
   const handleClearSearch = () => {
-    setTrackSearch(''); // Clear search input
-    setTrackResult(null); // Clear track result
-    setShipName(''); // Clear ship name
+    setInputValue(''); // Limpiar el campo de búsqueda
+    setTrackSearch(''); // Limpiar trackSearch en el contexto
+    setTrackResult(null); // Limpiar resultado de la búsqueda
+    setShipName(''); // Limpiar nombre del barco
     window.scrollTo({ top: 20, behavior: 'smooth' });
-  };
-
-  const handleSearchChange = (e) => {
-    setTrackSearch(e.target.value);
-    setShipName(''); // Reset ship name when search input changes
   };
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
       handleButtonClick();
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setInputValue(e.target.value);
+    setShipName(''); // Opcional: Resetear el nombre del barco al cambiar la búsqueda
   };
 
   const formatDateClass = (dateString, isClosest) => {
@@ -312,37 +329,37 @@ export default function Tracking() {
           <div className="w-full text-center pb-24">
             <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-7xl font-bold text-white animate__animated animate__bounceInDown">{t("track")}</h1>
           </div>
-          <div className="w-full backdrop-blur h-28 lg:h-44 bg-white/40 rounded-lg items-center p-8 animate__animated animate__bounceInUp">
+          <div className="w-full backdrop-blur h-28 md:h-44 bg-white/40 rounded-lg items-center p-8 animate__animated animate__bounceInUp">
             <div className="w-full flex flex-row lg:flex-row xl:flex-row text-white gap-2 ">
-              <div className='w-full'>
+              <div className='w-full relative'>
                 <input
                   type="text"
                   id="track_search"
-                  value={trackSearch}
+                  value={inputValue}
                   onChange={handleSearchChange}
                   onKeyDown={handleEnter}
                   className="h-12 w-full rounded-lg px-2 text-black bg-gray-100"
                   placeholder={t("track_placeholder")}
                 />
-               {trackSearch.length !== 0 && (
-                 <button
-                 id="track_button"
-                 className="absolute right-20 md:right-28 top-8 p-2 w-12 md:w-24 lg:w-24 xl:w-24 rounded-md flex justify-center"
-                 onClick={handleClearSearch}
-                 disabled={trackSearch === ''}
-               >
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-8 w-8 text-gray-400">
-                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                 </svg>
-                 </button>
-               )}
+                {inputValue.length !== 0 && (
+                  <button
+                  type="button"
+                  id="track_button"
+                  className="absolute right-0 top-0 p-2 md:w-24 lg:w-24 xl:w-24 rounded-md flex justify-center"
+                  onClick={handleClearSearch}
+              >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 text-gray-400">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+              </button>
+                )}
               </div>
 
               <button
                 id="track_button"
                 className="bg-light_blue hover:bg-blue p-2 w-12 md:w-24 lg:w-24 xl:w-24 rounded-md flex justify-center"
                 onClick={handleButtonClick}
-                disabled={trackSearch === ''}
+                disabled={inputValue.trim() === ''}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-white">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -352,7 +369,7 @@ export default function Tracking() {
             </div>
             <div className="flex m-4">
               <div className="pr-2 hidden md:block lg:block">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-white w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-white w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                 </svg>
               </div>
@@ -372,7 +389,7 @@ export default function Tracking() {
           <div className='w-full flex items-center justify-center pt-16'>
             <button onClick={handleClearSearch} className="btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-slate-300 rounded hover:bg-white group py-1.5 px-2.5">
               <span className="w-56 h-48 rounded bg-oldgold absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
-              <span className="relative w-full text-left text-bluemunsell transition-colors duration-300 ease-in-out group-hover:text-white">Limpiar busqueda</span>
+              <span className="relative w-full text-left text-bluemunsell transition-colors duration-300 ease-in-out group-hover:text-white">Limpiar búsqueda</span>
             </button>
           </div>
         </div>
@@ -395,7 +412,7 @@ export default function Tracking() {
                   <hr />
                 </div>
                 <div className='grid grid-cols-1 lg:grid-cols-2'>
-                  {/* fecha de llegada/estimada de llegada */}
+                  {/* Fecha de llegada/ETA */}
                   <div className="flex flex-col items-center justify-center lg:border-r text-center h-28 w-full p-4 border-slate-200">
                     <div className=''>
                       {trackResult.ActivityPlace === "CAUCEDO" || isAfterEta ? (
@@ -408,7 +425,7 @@ export default function Tracking() {
                       <p className='pl-2 text-md xl:text-lg font-bold text-gray-500'>{etaDate.toLocaleDateString('en-GB')}</p>
                     </div>
                   </div>
-                  {/* fecha de llegada/estimada de llegada fin */}
+                  {/* Fecha de llegada/ETA fin */}
 
                   <div className="flex flex-col md:flex-row items-center justify-center text-center h-28 w-full p-4">
                     <div className=''>

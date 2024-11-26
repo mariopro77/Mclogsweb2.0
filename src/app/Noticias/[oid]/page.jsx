@@ -1,44 +1,3 @@
-// // app/[locale]/Noticias/[id]/page.jsx
-// import { notFound } from 'next/navigation';
-// import Articulo from '../../../Components/Articulo';
-
-// // Move fetchNoticias outside so it can be used by both functions
-// async function fetchNoticias() {
-//   const res = await fetch("https://support.consilialogistics.com/mclogs/news?search=", {
-//     cache: 'no-cache', // Avoid caching to get fresh data
-//   });
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch data");
-//   }
-//   return res.json();
-// }
-
-// export async function generateMetadata({ params }) {
-//   const { oid } = await params;
-
-//   const noticias = await fetchNoticias();
-//   const contenido = noticias.find((noticia) => noticia.oid === oid);
-
-//   return {
-//     title: contenido?.title || 'Default Title',
-//     description: contenido?.subtitle || 'Default Description',
-//   };
-// }
-
-// export default async function Page({ params }) {
-//   const { oid } = await params;
-
-//   const noticias = await fetchNoticias();
-//   const contenido = noticias.find((noticia) => noticia.oid === oid);
-
-//   if (!contenido) {
-//     notFound(); // Redirect to 404 page if content not found
-//   }
-
-//   // Pass 'contenido' as a prop to the Articulo component
-//   return <Articulo contenido={contenido} />;
-// }
-
 
 // app/[locale]/Noticias/[id]/page.jsx
 import { notFound } from 'next/navigation';
@@ -56,7 +15,7 @@ async function fetchNoticias() {
 }
 
 export async function generateMetadata({ params }) {
-  const { oid } = params;
+  const { oid } = await params;
 
   const noticias = await fetchNoticias();
   const contenido = noticias.find((noticia) => noticia.oid === oid);
@@ -115,7 +74,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { oid } = params;
+  const { oid } = await params;
 
   const noticias = await fetchNoticias();
   const contenido = noticias.find((noticia) => noticia.oid === oid);

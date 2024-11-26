@@ -55,7 +55,7 @@ const LenguajeDropdown = () => {
 
       {isOpen && (
         <div
-          className="absolute right-0 z-10 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg"
+          className="lg:absolute right-0 z-10 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"

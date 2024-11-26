@@ -1,7 +1,11 @@
 import React from 'react';
+import CompartirBoton from '../Components/BotonCompartir';
 
 
 export default async function ArticulosPagina({ contenido }) {
+
+
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -35,6 +39,7 @@ export default async function ArticulosPagina({ contenido }) {
                 ))}
               </div>
             </div>
+                <CompartirBoton contenido={contenido}/>
           </div>
           <div className='h-full w-full flex justify-center items-center'>
             <img className="relative h-[38rem] w-[100rem] mb-2 object-cover " src={`https://support.consilialogistics.com/public/${contenido.image}`} alt="" />
