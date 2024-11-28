@@ -1,18 +1,18 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/Centrodeayuda/page": "app/Centrodeayuda/page.js",
-  "/Nosotros/page": "app/Nosotros/page.js",
   "/Agentes/page": "app/Agentes/page.js",
-  "/HighPerformance/page": "app/HighPerformance/page.js",
-  "/Noticias/[oid]/page": "app/Noticias/[oid]/page.js",
-  "/PrivacidadySeguridad/page": "app/PrivacidadySeguridad/page.js",
+  "/Centrodeayuda/page": "app/Centrodeayuda/page.js",
   "/Noticias/page": "app/Noticias/page.js",
   "/PreguntasFrecuentes/page": "app/PreguntasFrecuentes/page.js",
-  "/Proyectos/page": "app/Proyectos/page.js",
-  "/Proyectos/[id]/page": "app/Proyectos/[id]/page.js",
+  "/Nosotros/page": "app/Nosotros/page.js",
+  "/PrivacidadySeguridad/page": "app/PrivacidadySeguridad/page.js",
   "/Servicios/page": "app/Servicios/page.js",
-  "/Soporte/page": "app/Soporte/page.js",
+  "/Noticias/[oid]/page": "app/Noticias/[oid]/page.js",
+  "/HighPerformance/page": "app/HighPerformance/page.js",
+  "/Proyectos/page": "app/Proyectos/page.js",
   "/Terminos/page": "app/Terminos/page.js",
-  "/page": "app/page.js",
-  "/Rastreo/page": "app/Rastreo/page.js"
+  "/Rastreo/page": "app/Rastreo/page.js",
+  "/Proyectos/[id]/page": "app/Proyectos/[id]/page.js",
+  "/Soporte/page": "app/Soporte/page.js",
+  "/page": "app/page.js"
 }

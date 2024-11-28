@@ -1,15 +1,22 @@
-// src/i18n.js
+// i18n.js
 import i18n from 'i18next';
-import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
+import enCommon from '../public/locales/en/common.json';
+import esCommon from '../public/locales/es/common.json';
+
 i18n
-  .use(Backend)
   .use(initReactI18next)
   .init({
-    backend: {
-      loadPath: '/locales/{{lng}}/common.json',
+    resources: {
+      en: {
+        common: enCommon,
+      },
+      es: {
+        common: esCommon,
+      },
     },
+    lng: 'es', // Establece el idioma por defecto
     fallbackLng: 'es',
     interpolation: {
       escapeValue: false,

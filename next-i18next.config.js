@@ -10,4 +10,5 @@ module.exports = {
   load: 'languageOnly',   // Ignora las variantes regionales
   supportedLngs: ['es', 'en'], // Lista de idiomas soportados
   localePath: path.resolve('./public/locales'), // Ruta a los archivos de traducción
+
 };

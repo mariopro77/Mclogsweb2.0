@@ -29,7 +29,7 @@ const ServiciosComponentes = () => {
 
 
 
-    const { t } = useTranslation("en");
+    const { t } = useTranslation("common");
 
     useEffect(() => {
         const handleHashChange = () => {
