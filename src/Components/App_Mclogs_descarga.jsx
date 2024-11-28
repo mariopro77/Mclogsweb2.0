@@ -40,12 +40,12 @@ export default function AppMclogs() {
 
                 <div className="w-full h-full flex justify-center items-center flex-col px-10 sm:px-10 md:px-20 lg:px-30 xl:px-30 2xl:px-40 pb-16 gap-16 pt-16">
                     <div className="w-full flex flex-col xl:flex-row">
+
                         <motion.div className="w-full xl:w-1/2 rounded-md overflow-hidden flex justify-center xl:justify-start bg-videogray" style={{ scale }} >
-                            <video className="h-80 xl:h-[25rem] object-cover z-10" src="/Videos/App_Mclogs.mp4" loop autoPlay muted controls={false} onContextMenu={(e) => e.preventDefault()} playsInline></video>
+                            <video className="h-80 xl:h-[25rem] object-cover z-10 bg-videogray" src="/Videos/App_Mclogs.mp4" loop autoPlay muted controls={false} onContextMenu={(e) => e.preventDefault()} playsInline></video>
                         </motion.div>
-                        {/* <motion.div style={{ scale }} className="rounded-md overflow-hidden bg-videogray w-1/2 flex items-center justify-center">
-                          
-                        </motion.div> */}
+
+
                         <div className="w-full xl:w-1/2 grid grid-cols-2  pt-5 xl:pt-0 xl:px-5 gap-4 auto-rows-auto">
                             {/* Dashboard Card */}
                             <div

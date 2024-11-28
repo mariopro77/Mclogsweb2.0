@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from "next/navigation";
 
 const languages = [
   { code: 'es', label: 'Español', flag: '🇪🇸' },
@@ -9,10 +10,11 @@ const languages = [
 ];
 
 const LenguajeDropdown = () => {
-  const { i18n } = useTranslation(); // Usar i18n de next-i18next
+  const { i18n } = useTranslation("common"); // Usar i18n de next-i18next
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState(null);
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   // Set the selected language on mount
   useEffect(() => {

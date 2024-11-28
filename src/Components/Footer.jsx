@@ -1,10 +1,13 @@
-import React from "react";
+'use client'
+
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Footer() {
+  const { i18n } = useTranslation("common");
   const { t } = useTranslation("common");
    const router = useRouter();
 
@@ -16,7 +19,6 @@ export default function Footer() {
     { name: t("agents"), link: "/Agentes" },
     { name: t("news"), link: "/Noticias" },
     { name: t("tracking"), link: "/Rastreo" },
-    { name: t("contacts"), link: "/Contacto" },
     { name: t("myaccount"), link: "https://my.mclogs.com/auth/login" },
   ];
 
@@ -26,12 +28,18 @@ export default function Footer() {
     { name: t("centro_de_ayuda"), link: "/Centrodeayuda" },
   ];
 
- 
+  const [selectedLang, setSelectedLang] = useState(null);
 
-const handleChange = (newLang) => {
-  const { pathname, asPath, query } = router;
-  router.push({ pathname, query }, asPath, { locale: newLang });
-};
+
+  const selectLanguage = (lang) => {
+    setSelectedLang(lang);
+
+    // Cambiar idioma usando i18n de next-i18next
+    i18n.changeLanguage(lang);
+
+    router.refresh();
+  };
+
 
 
   return (
@@ -175,7 +183,7 @@ const handleChange = (newLang) => {
       </div>
 
       <div>
-        <hr className=" bg-slate-200 w-full " />
+        <hr className=" bg-slate-200 w-full"/>
       </div>
 
       <div className="flex justify-between py-6 text-center">
@@ -183,10 +191,10 @@ const handleChange = (newLang) => {
           {t("rights_first_half")} {currentYear} {t("rights_second_half")}
         </p>
         <div className="language-switcher text-xs">
-          <button onClick={() => handleChange("en")} className="px-4 text-gray-500">
+          <button onClick={() => selectLanguage("en")} className="px-4 text-gray-500">
             English
           </button>
-          <button onClick={() => handleChange("es")} className="px-4  text-gray-500">
+          <button onClick={() => selectLanguage("es")} className="px-4  text-gray-500">
             Español
           </button>
         </div>

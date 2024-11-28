@@ -73,7 +73,7 @@ export default function NavBar({ activeLink, setActiveLink }) {
       <div className="flex items-center justify-between h-full">
         {/* Logo */}
         <div className="flex-none h-full w-auto items-center justify-center pt-2">
-          <Link href="/" className="text-3xl">
+          <Link href="/" onClick={() => setActiveLink("/")} className="text-3xl">
             <Image className="pt-2 h-auto w-32" src={imageSrc} alt="Logo" width={500} height={300}/>
           </Link>
         </div>
@@ -222,7 +222,7 @@ export default function NavBar({ activeLink, setActiveLink }) {
                       className={`xl:hover:bg-transparent hover:bg-gray-100 flex py-2 px-4 items-center rounded-md border-gray-300 cursor-pointer ${
                         activeLink === link.link ? "text-oldgold" : ""
                       }`}
-                      onClick={() => setActiveLink(link.link)}
+                      onClick={() => {setActiveLink(link.link); setOpen(false);}}
                     >
                       {link.name}
                     </Link>
