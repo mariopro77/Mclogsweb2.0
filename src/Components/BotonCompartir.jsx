@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'; // Asegúrate de tener i18n confi
 
 export default function CompartirBoton({ contenido }) {
   const [compartir, setCompartir] = useState(false);
-  const { t } = useTranslation(); // Si estás usando i18n para traducciones
+  const { t } = useTranslation("common"); // Si estás usando i18n para traducciones
 
   const toggleCompartir = () => {
     setCompartir(!compartir);
