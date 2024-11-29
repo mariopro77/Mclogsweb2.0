@@ -3,7 +3,7 @@ import Checkmark from 'react-checkmark';
 import { useTranslation } from "react-i18next";
 
 export default function FormsSoporte() {
-    const { t } = useTranslation();
+    const { t } = useTranslation("common");
     const [submit, setSubmit] = useState(false);
     const [codigo, setCodigo] = useState("");
     const [formData, setFormData] = useState({

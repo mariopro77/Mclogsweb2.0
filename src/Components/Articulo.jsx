@@ -17,8 +17,8 @@ export default async function ArticulosPagina({ contenido }) {
   }
 
   return (
-    <div className='h-full w-full relative font-Encode-Sans pt-32 px-10 max-w-8xl overflow-hidden'>
-      <div className='flex flex-col justify-center items-center pb-12 w-full'>
+    <div className='h-full w-full flex justify-center relative font-Encode-Sans pt-32 px-10 overflow-hidden'>
+      <div className='flex flex-col justify-center items-center pb-12 w-full max-w-6xl'>
         <div className='w-full text-start'>
           <p className="text-sm text-slate-500">{contenido.type}</p>
         </div>

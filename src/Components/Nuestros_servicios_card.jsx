@@ -23,13 +23,9 @@ export default function NuestrosServicios(props) {
     return (
         <Link href={props.link}
         className={props.espacio}
-        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
            >
-            <div
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
-                
-            >
                 <div className="relative">
                     {showVideo && (
                         <video
@@ -45,7 +41,7 @@ export default function NuestrosServicios(props) {
                         ></video>
                     )}
                 </div>
-                <div className="w-auto flex justify-center">
+                <div className="w-auto">
                     <div className={props.claseImagen} alt="">
                         {props.imagen}
                     </div>
@@ -58,7 +54,6 @@ export default function NuestrosServicios(props) {
                         <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
                     </svg>
                 </div>
-            </div>
         </Link>
     );
 }
