@@ -3705,10 +3705,6 @@ body {
     height: 16rem;
   }
 
-  .xl\:h-96 {
-    height: 24rem;
-  }
-
   .xl\:h-screen {
     height: 100vh;
   }
