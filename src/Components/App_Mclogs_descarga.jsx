@@ -42,7 +42,7 @@ export default function AppMclogs() {
                     <div className="w-full flex flex-col xl:flex-row">
 
                         <div className="w-full xl:w-1/2 rounded-md overflow-hidden flex justify-center xl:justify-start bg-videogray">
-                            <video className="h-80 xl:h-[25rem] object-cover z-10 bg-videogray" src="/Videos/App_Mclogs.mp4" loop autoPlay muted controls={false} onContextMenu={(e) => e.preventDefault()} playsInline></video>
+                            {/* <video className="h-80 xl:h-[25rem] object-cover z-10 bg-videogray" src="/Videos/App_Mclogs.mp4" loop autoPlay muted controls={false} onContextMenu={(e) => e.preventDefault()} playsInline></video> */}
                         </div>
 
 
