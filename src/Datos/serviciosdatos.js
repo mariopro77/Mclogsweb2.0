@@ -126,7 +126,7 @@ const serviciosdatos = [
         texto: "Nuestro equipo de expertos en aduanas ofrece servicios de gestión aduanal integral, facilitando los trámites y asegurando el cumplimiento de todas las regulaciones.",
         claselink: "rounded-md text-white text-opacity-75 hover:text-opacity-100",
         link: "/Servicios#gestion_aduanal",
-        video: "/Videos/Paqueteria.mp4"
+        video: "/Videos/Gestion_aduanal.mp4"
     },
     {
         id: 6,

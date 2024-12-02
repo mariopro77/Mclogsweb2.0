@@ -3,10 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/navigation";
+import Image from 'next/image'; // Importar el componente de Next.js para imágenes
 
 const languages = [
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
-  { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'es', label: 'Español', flag: '/spain.png' },
+  { code: 'en', label: 'English', flag: '/usa.png' },
 ];
 
 const LenguajeDropdown = () => {
@@ -52,7 +53,17 @@ const LenguajeDropdown = () => {
         onClick={toggleDropdown}
         className="inline-flex items-center justify-center px-4 text-sm font-medium text-gray-700 bg-transparent focus:outline-none"
       >
-        <span className="mr-2 text-xl">{selectedLang?.flag || '🇪🇸'}</span>
+        {selectedLang?.flag ? (
+          <Image
+            src={selectedLang.flag}
+            alt={selectedLang.label}
+            width={24}
+            height={24}
+            className="mr-2"
+          />
+        ) : (
+          '🌐'
+        )}
       </button>
 
       {isOpen && (
@@ -74,7 +85,13 @@ const LenguajeDropdown = () => {
                 } flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900`}
                 role="menuitem"
               >
-                <span className="mr-3 text-xl">{lang.flag}</span>
+                <Image
+                  src={lang.flag}
+                  alt={lang.label}
+                  width={20}
+                  height={20}
+                  className="mr-3"
+                />
                 {lang.label}
               </button>
             ))}

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: contenido?.title,
         description: contenido?.description,
-        url: `https://yourdomain.com/${params.locale}/Noticias/${oid}`,
+        url: `https://www.mclogs.com/${params.locale}/Noticias/${oid}`,
         images: [
           {
             url: `https://support.consilialogistics.com/public/${contenido.image}` || 'favicon.ico',
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: contenido.title,
       description: contenido.subtitle,
-      url: `https://yourdomain.com/${params.locale}/Noticias/${oid}`,
+      url: `https://www.mclogs.com/${params.locale}/Noticias/${oid}`,
       images: [
         {
           url: `https://support.consilialogistics.com/public/${contenido.image}` || 'favicon.ico', // Ensure 'contenido.image' is valid
