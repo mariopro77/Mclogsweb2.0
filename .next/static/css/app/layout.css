@@ -3705,16 +3705,12 @@ body {
     height: 16rem;
   }
 
-  .xl\:h-\[25rem\] {
-    height: 25rem;
+  .xl\:h-96 {
+    height: 24rem;
   }
 
   .xl\:h-screen {
     height: 100vh;
-  }
-
-  .xl\:h-96 {
-    height: 24rem;
   }
 
   .xl\:w-1\/2 {
@@ -3775,10 +3771,6 @@ body {
 
   .xl\:items-center {
     align-items: center;
-  }
-
-  .xl\:justify-start {
-    justify-content: flex-start;
   }
 
   .xl\:gap-10 {
