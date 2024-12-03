@@ -1,3 +1,18 @@
 {
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/Noticias/page": "app/Noticias/page.js",
+  "/Agentes/page": "app/Agentes/page.js",
+  "/Nosotros/page": "app/Nosotros/page.js",
+  "/Noticias/[oid]/page": "app/Noticias/[oid]/page.js",
+  "/Centrodeayuda/page": "app/Centrodeayuda/page.js",
+  "/Proyectos/[id]/page": "app/Proyectos/[id]/page.js",
+  "/Proyectos/page": "app/Proyectos/page.js",
+  "/PreguntasFrecuentes/page": "app/PreguntasFrecuentes/page.js",
+  "/PrivacidadySeguridad/page": "app/PrivacidadySeguridad/page.js",
+  "/HighPerformance/page": "app/HighPerformance/page.js",
+  "/Servicios/page": "app/Servicios/page.js",
+  "/page": "app/page.js",
+  "/Soporte/page": "app/Soporte/page.js",
+  "/Terminos/page": "app/Terminos/page.js",
+  "/Rastreo/page": "app/Rastreo/page.js"
 }

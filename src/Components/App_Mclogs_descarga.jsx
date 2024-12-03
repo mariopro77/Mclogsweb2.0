@@ -17,7 +17,7 @@ export default function AppMclogs() {
             <div className="flex flex-col items-center justify-center py-8 md:py-16">
                 <div className="flex flex-col h-auto items-center justify-center">
                     <h1 className="text-6xl text-bluemunsell font-semibold">McLogs</h1>
-                    <p className="pt-4 text-lg">{t("download")}</p>
+                    <p className="px-4 pt-4 text-center text-lg">{t("download")}</p>
                     <div className="flex flex-row items-center justify-center gap-x-3 pr-1">
                         <div>
                             <a href='https://apps.apple.com/do/app/mclogs/id1504701375' target="_blank" rel="noreferrer">
