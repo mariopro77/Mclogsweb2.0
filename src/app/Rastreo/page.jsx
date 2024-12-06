@@ -442,7 +442,7 @@ export default function Tracking() {
 
                 </div>
                 {!shipFetchError && valid && shouldShowIframe && (
-                  <div className="relative flex flex-col items-center justify-center text-center h-[30rem] p-4  w-full">
+                  <div className="relative flex flex-col items-center justify-center text-center h-[40rem] p-4  w-full">
                     <div className="w-full h-full">
                       <iframe
                         title="MarineTraffic"

@@ -117,7 +117,7 @@ export default function NavBar({ activeLink, setActiveLink }) {
               onMouseLeave={() => setDropdownOpen(false)}
             >
               <div className="cursor-pointer flex justify-center items-center py-2">
-                <p>{t("us")}</p>
+                <p>{t("information")}</p>
                 <svg
                   className="ml-1 h-4 w-4"
                   fill="none"
