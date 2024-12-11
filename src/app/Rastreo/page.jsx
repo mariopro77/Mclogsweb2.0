@@ -3,13 +3,14 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from 'framer-motion';
-import { TrackingContext } from '../../../context/TrackingContext'; 
+import { TrackingContext } from '../../../context/TrackingContext';
 
-export default function Tracking() { 
+export default function Tracking() {
 
   const { trackSearch, setTrackSearch, shipName, setShipName } = useContext(TrackingContext);
 
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+  const locale = i18n.language;
   const [iframeSrc, setIframeSrc] = useState("");
   const [mmsi, setMmsi] = useState(null);
   const [trackResult, setTrackResult] = useState(null);
@@ -247,9 +248,10 @@ export default function Tracking() {
       const isLastItem = index === trackResult.Summary.length - 1;
       return (
         <div className="flex gap-x-3 justify-center w-full" key={index}>
-          <div className="w-16 text-start">
+          <div className=" p-2 text-start">
             <span className="text-xs text-gray-500 dark:text-neutral-400">
-              <p>{`${new Date(x.Date).toDateString()}, ${new Date(x.Date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}</p>
+              <p className='w-28'>{`${new Date(x.Date).toLocaleDateString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}, {`${new Date(x.Date).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`}
+              </p>
             </span>
           </div>
 
@@ -267,247 +269,248 @@ export default function Tracking() {
               {t(`${x.Status.toLowerCase().replace(/ /g, "_")}`)}
             </h3>
             <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">
-              {t(`${x.Description.toLowerCase().replace(/ /g, "_")}`)}
+              {t(`${x.Description.toLowerCase().replace(/ /g, "_")}`)} 
+              <p className='text-gray-300'>({x.ActivityPlace})</p>
             </p>
             <div className="mt-1 -ms-1 p-1 inline-flex flex-col text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700">
               <p className="w-auto"> {x.Ship || '-'}</p>
               <p>({x.TravelNumber || '-'})</p>
             </div>
           </div>
-        </div>
+        </div >
       );
-    });
+});
   };
 
-  const renderImages = () => {
-    if (!trackResult || !trackResult.State) return null;
+const renderImages = () => {
+  if (!trackResult || !trackResult.State) return null;
 
-    let imageUrl = '';
+  let imageUrl = '';
 
-    switch (trackResult.State) {
-      case 'Despachado':
-      case 'En Puerto':
-      case 'EnPuerto':
-        imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-03.svg' : 'lifeline-avion-03.svg';
-        break;
-      case 'En Despacho Solicitado Maritimo':
-      case 'En Despacho Solicitado':
-      case 'DespachoSolicitado':
-        imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-03.svg' : 'lifeline-avion-03.svg';
-        break;
-      case 'En Transito':
-      case 'EnTransito':
-        trackResult.State = 'En Transito';
-        imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-02.svg' : 'lifeline-avion-02.svg';
-        break;
-      case 'EnCoordinacion':
-      case 'En Coordinación':
-        imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-01.svg' : 'lifeline-avion-01.svg';
-        break;
-      default:
-        return null;
-    }
-
-    return (
-      <img src={`https://www.mclogs.com/assets/images/status_orders/${imageUrl}`} alt="Status" className="imageNow h-full" />
-    );
-  };
-
-  const currentDate = new Date();
-  const etaDate = trackResult ? new Date(trackResult.ETA) : null;
-  const isAfterEta = etaDate && currentDate > etaDate;
-
-  const shouldShowIframe = trackResult && trackResult.Summary && !trackResult.Summary.some(
-    summary => ["EnPuerto", "enpuerto", "En Puerto", "en puerto", "Liberado", "liberado", "Despachado", "despachado", "retornado", "Retornado"].includes(summary.Status) && new Date(summary.Date) <= currentDate
-  );
+  switch (trackResult.State) {
+    case 'Despachado':
+    case 'En Puerto':
+    case 'EnPuerto':
+      imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-03.svg' : 'lifeline-avion-03.svg';
+      break;
+    case 'En Despacho Solicitado Maritimo':
+    case 'En Despacho Solicitado':
+    case 'DespachoSolicitado':
+      imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-03.svg' : 'lifeline-avion-03.svg';
+      break;
+    case 'En Transito':
+    case 'EnTransito':
+      trackResult.State = 'En Transito';
+      imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-02.svg' : 'lifeline-avion-02.svg';
+      break;
+    case 'EnCoordinacion':
+    case 'En Coordinación':
+      imageUrl = trackResult.TransportMode === 'Maritimo' ? 'lifeline-barco-01.svg' : 'lifeline-avion-01.svg';
+      break;
+    default:
+      return null;
+  }
 
   return (
-    <div className='h-full w-full font-Encode-Sans pt-20'>
-      <div className='relative flex flex-col px-10 sm:px-10 md:px-20 lg:px-30 xl:px-30 2xl:px-40 h-screen items-center justify-center overflow-hidden'>
-        <video className="absolute z-[-10] inset-0 w-full h-full object-cover brightness-50" src="/Videos/Video2.mp4" loop autoPlay muted controls={false} onContextMenu={(e) => e.preventDefault()} playsInline ></video>
-        <div className='w-full h-2/3 flex flex-col items-center justify-start'>
-          <div className="w-full text-center pb-24">
-            <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-7xl font-bold text-white animate__animated animate__bounceInDown">{t("track")}</h1>
-          </div>
-          <div className="w-full backdrop-blur h-28 md:h-44 bg-white/40 rounded-lg items-center p-8 animate__animated animate__bounceInUp">
-            <div className="w-full flex flex-row lg:flex-row xl:flex-row text-white gap-2 ">
-              <div className='w-full relative'>
-                <input
-                  type="text"
-                  id="track_search"
-                  value={inputValue}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleEnter}
-                  className="h-12 w-full rounded-lg px-2 text-black bg-gray-100"
-                  placeholder={t("track_placeholder")}
-                />
-                {inputValue.length !== 0 && (
-                  <button
+    <img src={`https://www.mclogs.com/assets/images/status_orders/${imageUrl}`} alt="Status" className="imageNow h-full" />
+  );
+};
+
+const currentDate = new Date();
+const etaDate = trackResult ? new Date(trackResult.ETA) : null;
+const isAfterEta = etaDate && currentDate > etaDate;
+
+const shouldShowIframe = trackResult && trackResult.Summary && !trackResult.Summary.some(
+  summary => ["EnPuerto", "enpuerto", "En Puerto", "en puerto", "Liberado", "liberado", "Despachado", "despachado", "retornado", "Retornado"].includes(summary.Status) && new Date(summary.Date) <= currentDate
+);
+
+return (
+  <div className='h-full w-full font-Encode-Sans pt-20'>
+    <div className='relative flex flex-col px-10 sm:px-10 md:px-20 lg:px-30 xl:px-30 2xl:px-40 h-screen items-center justify-center overflow-hidden'>
+      <video className="absolute z-[-10] inset-0 w-full h-full object-cover brightness-50" src="/Videos/Video2.mp4" loop autoPlay muted controls={false} onContextMenu={(e) => e.preventDefault()} playsInline ></video>
+      <div className='w-full h-2/3 flex flex-col items-center justify-start'>
+        <div className="w-full text-center pb-24">
+          <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-7xl font-bold text-white animate__animated animate__bounceInDown">{t("track")}</h1>
+        </div>
+        <div className="w-full backdrop-blur h-28 md:h-44 bg-white/40 rounded-lg items-center p-8 animate__animated animate__bounceInUp">
+          <div className="w-full flex flex-row lg:flex-row xl:flex-row text-white gap-2 ">
+            <div className='w-full relative'>
+              <input
+                type="text"
+                id="track_search"
+                value={inputValue}
+                onChange={handleSearchChange}
+                onKeyDown={handleEnter}
+                className="h-12 w-full rounded-lg px-2 text-black bg-gray-100"
+                placeholder={t("track_placeholder")}
+              />
+              {inputValue.length !== 0 && (
+                <button
                   type="button"
                   id="track_button"
                   className="absolute right-0 top-0 p-2 md:w-24 lg:w-24 xl:w-24 rounded-md flex justify-center"
                   onClick={handleClearSearch}
-              >
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 text-gray-400">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                   </svg>
-              </button>
-                )}
-              </div>
-
-              <button
-                id="track_button"
-                className="bg-light_blue hover:bg-blue p-2 w-12 md:w-24 lg:w-24 xl:w-24 rounded-md flex justify-center"
-                onClick={handleButtonClick}
-                disabled={inputValue.trim() === ''}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-white">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-              </button>
-
+                </button>
+              )}
             </div>
-            <div className="flex m-4">
-              <div className="pr-2 hidden md:block lg:block">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-white w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                </svg>
-              </div>
-              <div className='hidden md:block lg:block'>
-                <p className="text-xs sm:text-sm md:text-normal text-white">
-                  {t("track_guide")}
-                </p>
-              </div>
+
+            <button
+              id="track_button"
+              className="bg-light_blue hover:bg-blue p-2 w-12 md:w-24 lg:w-24 xl:w-24 rounded-md flex justify-center"
+              onClick={handleButtonClick}
+              disabled={inputValue.trim() === ''}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-white">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </button>
+
+          </div>
+          <div className="flex m-4">
+            <div className="pr-2 hidden md:block lg:block">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-white w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+              </svg>
+            </div>
+            <div className='hidden md:block lg:block'>
+              <p className="text-xs sm:text-sm md:text-normal text-white">
+                {t("track_guide")}
+              </p>
             </div>
           </div>
         </div>
       </div>
-
-      {error && <div className="track_no_result_section h-screen flex items-center justify-center" ref={scrollRef}>
-        <div>
-          <h1 className='text-3xl sm:text-4xl md:text-4xl lg:text-7xl px-10 sm:px-10 md:px-20 lg:px-30 xl:px-30 2xl:px-40'>{error}</h1>
-          <div className='w-full flex items-center justify-center pt-16'>
-            <button onClick={handleClearSearch} className="btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-slate-300 rounded hover:bg-white group py-1.5 px-2.5">
-              <span className="w-56 h-48 rounded bg-oldgold absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
-              <span className="relative w-full text-left text-bluemunsell transition-colors duration-300 ease-in-out group-hover:text-white">Limpiar búsqueda</span>
-            </button>
-          </div>
-        </div>
-      </div>}
-
-      {trackResult && (
-        <div className="relative track_result_section px-10 sm:px-10 md:px-20 lg:px-30 xl:px-40 2xl:px-64 h-auto py-16 " ref={scrollRef}>
-          <div className='grid grid-cols-1 xl:grid-cols-2 gap-10 pt-6' >
-            <div className='flex flex-col  '>
-              <div className='rounded-md border-2'>
-                <div className="imagesContainer text-center mt-8  rounded-md">
-                  <div className='w-full h-24 flex justify-center py-4'>
-                    {renderImages()}
-                  </div>
-                  <div className='text-center py-4'>
-                    <h1 className="text-2xl font-semibold text-Estadoverde ">{trackResult.State && <p>{t(`state.${trackResult.State.toLowerCase().replace(/ /g, "_")}`)}</p>}</h1>
-                  </div>
-                </div>
-                <div className='px-4'>
-                  <hr />
-                </div>
-                <div className='grid grid-cols-1 lg:grid-cols-2'>
-                  {/* Fecha de llegada/ETA */}
-                  <div className="flex flex-col items-center justify-center lg:border-r text-center h-28 w-full p-4 border-slate-200">
-                    <div className=''>
-                      {trackResult.ActivityPlace === "CAUCEDO" || isAfterEta ? (
-                        <h1 className="font-semibold text-md xl:text-lg text-bluemunsell">{t("eta_past")} </h1>
-                      ) : (
-                        <h1 className="font-semibold text-md xl:text-lg text-bluemunsell">{t("eta_future")}:</h1>
-                      )}
-                    </div>
-                    <div>
-                      <p className='pl-2 text-md xl:text-lg font-bold text-gray-500'>{etaDate.toLocaleDateString('en-GB')}</p>
-                    </div>
-                  </div>
-                  {/* Fecha de llegada/ETA fin */}
-
-                  <div className="flex flex-col md:flex-row items-center justify-center text-center h-28 w-full p-4">
-                    <div className=''>
-                      <p className=" font-semibold text-bluemunsell text-md xl:text-lg">{t("hbl_state")}:</p>
-                    </div>
-                    <div className="flex-non py-2">
-                      {trackResult.TelexRelease === true ?
-                        <img className="ml-4 h-24 w-30" src="/Icons/telexRelease_hbl.png" alt="TELEX RELEASE" />
-                        :
-                        <img className="ml-4 h-24 w-30" src="/Icons/copia_hbl.png" alt="COPIA BL" />
-                      }
-                    </div>
-                  </div>
-
-                </div>
-                {!shipFetchError && valid && shouldShowIframe && (
-                  <div className="relative flex flex-col items-center justify-center text-center h-[40rem] p-4  w-full">
-                    <div className="w-full h-full">
-                      <iframe
-                        title="MarineTraffic"
-                        width="100%"
-                        height="100%"
-                        scrolling="no"
-                        frameBorder="0"
-                        src={iframeSrc}
-                        className="clicked rounded-md overflow-hidden"
-                      >
-                        Browser does not support embedded objects.<br />Visit directly <a href="http://www.marinetraffic.com/">www.marinetraffic.com</a>
-                      </iframe>
-                    </div>
-                  </div>
-                )}
-                <AnimatePresence>
-                  {shipFetchError && isVisible && shouldShowIframe  && (
-                    <motion.div
-                      initial={{
-                        scale: 0,
-                      }}
-                      animate={{
-                        scale: 1,
-                      }}
-                      exit={{
-                        scale: 0,
-                        transition: { duration: 1, ease: 'easeInOut' }
-                      }}
-                      transition={{
-                        duration: 1,
-                        ease: 'easeInOut'
-                      }}
-                      className="flex flex-col items-center justify-center text-center h-40 w-full p-4 gap-y-2 mt-4"
-                    >
-                      <h1 className="font-semibold text-white text-2xl bg-red-400 h-40 w-full text-center flex justify-center items-center rounded-md">
-                        No se encontró registros de este barco
-                      </h1>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-            </div>
-
-            <div className='border-2 border-slate-200 rounded-md flex flex-col items-center'>
-              <div className='pt-8 pb-2'>
-                <h1 className='text-center text-2xl font-bold text-blue'>Historial</h1>
-
-              </div>
-              <div className='pb-8 w-full flex items-center justify-center'>
-                <hr className='w-5/6 ' />
-              </div>
-              <div>
-                {renderSummary()}
-              </div>
-            </div>
-          </div>
-          <div className='w-full flex items-center justify-center pt-16'>
-            <button onClick={handleClearSearch} className="btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-slate-300 rounded hover:bg-white group py-1.5 px-2.5">
-              <span className="w-56 h-48 rounded bg-oldgold absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
-              <span className="relative w-full text-left text-bluemunsell transition-colors duration-300 ease-in-out group-hover:text-white">{t("clean_search_btn")}</span>
-            </button>
-          </div>
-        </div>
-      )}
     </div>
-  );
+
+    {error && <div className="track_no_result_section h-screen flex items-center justify-center" ref={scrollRef}>
+      <div>
+        <h1 className='text-3xl sm:text-4xl md:text-4xl lg:text-7xl px-10 sm:px-10 md:px-20 lg:px-30 xl:px-30 2xl:px-40'>{error}</h1>
+        <div className='w-full flex items-center justify-center pt-16'>
+          <button onClick={handleClearSearch} className="btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-slate-300 rounded hover:bg-white group py-1.5 px-2.5">
+            <span className="w-56 h-48 rounded bg-oldgold absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+            <span className="relative w-full text-left text-bluemunsell transition-colors duration-300 ease-in-out group-hover:text-white">Limpiar búsqueda</span>
+          </button>
+        </div>
+      </div>
+    </div>}
+
+    {trackResult && (
+      <div className="relative track_result_section px-10 sm:px-10 md:px-20 lg:px-30 xl:px-40 2xl:px-64 h-auto py-16 " ref={scrollRef}>
+        <div className='grid grid-cols-1 xl:grid-cols-2 gap-10 pt-6' >
+          <div className='flex flex-col  '>
+            <div className='rounded-md border-2'>
+              <div className="imagesContainer text-center mt-8  rounded-md">
+                <div className='w-full h-24 flex justify-center py-4'>
+                  {renderImages()}
+                </div>
+                <div className='text-center py-4'>
+                  <h1 className="text-2xl font-semibold text-Estadoverde ">{trackResult.State && <p>{t(`state.${trackResult.State.toLowerCase().replace(/ /g, "_")}`)}</p>}</h1>
+                </div>
+              </div>
+              <div className='px-4'>
+                <hr />
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-2'>
+                {/* Fecha de llegada/ETA */}
+                <div className="flex flex-col items-center justify-center lg:border-r text-center h-28 w-full p-4 border-slate-200">
+                  <div className=''>
+                    {trackResult.ActivityPlace === "CAUCEDO" || isAfterEta ? (
+                      <h1 className="font-semibold text-md xl:text-lg text-bluemunsell">{t("eta_past")} </h1>
+                    ) : (
+                      <h1 className="font-semibold text-md xl:text-lg text-bluemunsell">{t("eta_future")}:</h1>
+                    )}
+                  </div>
+                  <div>
+                    <p className='pl-2 text-md xl:text-lg font-bold text-gray-500'>{etaDate.toLocaleDateString('en-GB')}</p>
+                  </div>
+                </div>
+                {/* Fecha de llegada/ETA fin */}
+
+                <div className="flex flex-col md:flex-row items-center justify-center text-center h-28 w-full p-4">
+                  <div className=''>
+                    <p className=" font-semibold text-bluemunsell text-md xl:text-lg">{t("hbl_state")}:</p>
+                  </div>
+                  <div className="flex-non py-2">
+                    {trackResult.TelexRelease === true ?
+                      <img className="ml-4 h-24 w-30" src="/Icons/telexRelease_hbl.png" alt="TELEX RELEASE" />
+                      :
+                      <img className="ml-4 h-24 w-30" src="/Icons/copia_hbl.png" alt="COPIA BL" />
+                    }
+                  </div>
+                </div>
+
+              </div>
+              {!shipFetchError && valid && shouldShowIframe && (
+                <div className="relative flex flex-col items-center justify-center text-center h-[40rem] p-4  w-full">
+                  <div className="w-full h-full">
+                    <iframe
+                      title="MarineTraffic"
+                      width="100%"
+                      height="100%"
+                      scrolling="no"
+                      frameBorder="0"
+                      src={iframeSrc}
+                      className="clicked rounded-md overflow-hidden"
+                    >
+                      Browser does not support embedded objects.<br />Visit directly <a href="http://www.marinetraffic.com/">www.marinetraffic.com</a>
+                    </iframe>
+                  </div>
+                </div>
+              )}
+              <AnimatePresence>
+                {shipFetchError && isVisible && shouldShowIframe && (
+                  <motion.div
+                    initial={{
+                      scale: 0,
+                    }}
+                    animate={{
+                      scale: 1,
+                    }}
+                    exit={{
+                      scale: 0,
+                      transition: { duration: 1, ease: 'easeInOut' }
+                    }}
+                    transition={{
+                      duration: 1,
+                      ease: 'easeInOut'
+                    }}
+                    className="flex flex-col items-center justify-center text-center h-40 w-full p-4 gap-y-2 mt-4"
+                  >
+                    <h1 className="font-semibold text-white text-2xl bg-red-400 h-40 w-full text-center flex justify-center items-center rounded-md">
+                      No se encontró registros de este barco
+                    </h1>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+          </div>
+
+          <div className='border-2 border-slate-200 rounded-md flex flex-col items-center'>
+            <div className='pt-8 pb-2'>
+              <h1 className='text-center text-2xl font-bold text-blue'>Historial</h1>
+
+            </div>
+            <div className='pb-8 w-full flex items-center justify-center'>
+              <hr className='w-5/6 ' />
+            </div>
+            <div>
+              {renderSummary()}
+            </div>
+          </div>
+        </div>
+        <div className='w-full flex items-center justify-center pt-16'>
+          <button onClick={handleClearSearch} className="btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-slate-300 rounded hover:bg-white group py-1.5 px-2.5">
+            <span className="w-56 h-48 rounded bg-oldgold absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+            <span className="relative w-full text-left text-bluemunsell transition-colors duration-300 ease-in-out group-hover:text-white">{t("clean_search_btn")}</span>
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+);
 }
