@@ -492,7 +492,7 @@ return (
 
           <div className='border-2 border-slate-200 rounded-md flex flex-col items-center'>
             <div className='pt-8 pb-2'>
-              <h1 className='text-center text-2xl font-bold text-blue'>Historial</h1>
+              <h1 className='text-center text-2xl font-bold text-blue'>{t("history")}</h1>
 
             </div>
             <div className='pb-8 w-full flex items-center justify-center'>

@@ -1,4 +1,5 @@
 {
+  "history" : "Movements",
   "information": "Information",
   "allocated": "Allocated",
   "arrival_at_an_in_transit_yard": "ARRIVAL AT AN IN-TRANSIT YARD",
@@ -228,6 +229,7 @@
   "gate_out_empty": "Gate out empty",
   "liberado": "Released",
   "en_transito": "In Transit",
+  "en_tránsito": "In Transit",
   "en_puerto": "In Port",
   "en_aeropuerto": "At Airport",
   "despacho_solicitado": "Dispatch Requested",
