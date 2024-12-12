@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"app/Nosotros/page.jsx -> ../../Components/Linea de tiempo\":{\"id\":\"app/Nosotros/page.jsx -> ../../Components/Linea de tiempo\",\"files\":[\"static/chunks/_app-pages-browser_src_Components_Linea_de_tiempo_jsx.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST='{"app/Nosotros/page.jsx -> ../../Components/Linea de tiempo":{"id":103,"files":["static/chunks/103.079b5354ceb847ba.js"]},"app/Soporte/page.jsx -> ../../Components/FormsSoporte":{"id":9338,"files":["static/chunks/214-10fa000b3ba8ec42.js","static/chunks/338.ccde987d52464e85.js"]}}';

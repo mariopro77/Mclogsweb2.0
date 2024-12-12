@@ -270,11 +270,11 @@ export default function Tracking() {
             </h3>
             <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">
               {t(`${x.Description.toLowerCase().replace(/ /g, "_")}`)} 
-              <p className='text-gray-300'>({x.ActivityPlace})</p>
+              <p className='text-gray-300'>{(x.ActivityPlace) || ""}</p>
             </p>
             <div className="mt-1 -ms-1 p-1 inline-flex flex-col text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700">
-              <p className="w-auto"> {x.Ship || '-'}</p>
-              <p>({x.TravelNumber || '-'})</p>
+              <p className="w-auto"> {x.Ship || ''}</p>
+              <p>{x.TravelNumber || ""}</p>
             </div>
           </div>
         </div >
